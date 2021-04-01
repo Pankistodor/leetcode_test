@@ -19,19 +19,28 @@ C can be placed before D (500) and M (1000) to make 400 and 900.
 Given a roman numeral, convert it to an integer.
 """
 
+# Идея основная: завести словарь значений алфавита, создать массив "значений на понижение",
+# суммировать значения по порядку, если встречается значение из массива на понижение,
+# вычесть удвоенное "предыдущее" значение.
+
+
 
 class Solution:
     def romanToInt(self, s: str):  # -> int:
         result = 0
+        prev = ""
         roman_dict = {'I': 1, 'V': 5, 'X': 10, 'L': 50, 'C': 100, 'D': 500,
                       'M': 1000}
-        for roman_number in list(s):
-            print(roman_dict.get(roman_number))
-
-            # return Roman_dict.get(roman_number)
+        strange_roman_dict = ["IV", "IX", "XL", "XC", "CD", "CM"]
+        for roman_number in s:
+            result += roman_dict.get(roman_number)
+            if (prev + roman_number) in strange_roman_dict:
+                result -= 2 * roman_dict.get(prev)
+            prev = roman_number
+        return result
 
 
 if __name__ == "__main__":
     sol = Solution()
     # tests
-    print(sol.romanToInt(s='MMXMC'))
+    print(sol.romanToInt(s='MMXXL'))
